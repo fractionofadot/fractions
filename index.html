@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Visualize Fractions</title>
+	<style type="text/css">
+		.fraction {
+			outline: 1px solid black;
+			width: 500px;
+			height: 25px;
+		}
+		.fraction-block {
+			outline: 1px solid black;
+			display: inline-block;
+			height: 25px;
+		}
+
+		.numerator {
+			background-color: seagreen;
+		}
+
+		.denominator {
+			background-color: indianred;
+		}
+	</style>
+</head>
+<body>
+	<div id="inputs"></div>
+	<div id="fraction_container"></div>
+
+</body>
+
+<script type="text/javascript">
+
+	function createFraction(numerator, denominator) {
+		var fraction_width = 500;
+		var fraction_height = 25;
+		
+		var fraction_container = document.getElementById('fraction_container');
+		
+		var fraction = document.createElement('div');
+		fraction.classList.add("fraction")
+
+		for (var i = 0; i <= denominator - 1; i++) {
+			denom = document.createElement('span');
+			denom.classList.add("fraction-block");
+			if (i < numerator) {
+				denom.classList.add("numerator");
+			} else {
+				denom.classList.add("denominator");
+			}
+			denom.style.width = (fraction_width / denominator) + "px";
+			fraction.appendChild(denom)
+		}
+
+		fraction_container.appendChild(fraction);
+	}
+
+	createFraction(3,4);
+	createFraction(5,6);
+	createFraction(9,11);
+	createFraction(10,12);
+	
+</script>
+</html>
