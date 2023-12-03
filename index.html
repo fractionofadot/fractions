@@ -37,10 +37,15 @@
 			outline: 1px dashed pink;
 			display: inline-block;
 			height: 25px;
+			opacity: 0.40;
 		}
 
 		#inputs {
 			margin-bottom: 1em;
+		}
+
+		.hide {
+			visibility: hidden;
 		}
 	</style>
 </head>
@@ -49,17 +54,21 @@
 		<p>Type a fraction to add it to the list (example: 3/4)</p>
 		<input type="text" name="fraction" id="user_fraction">
 		<input type="submit" name="add" id="submit" value="add fraction to list">
+		<br/>
+		<span>Show decimal?</span><input type="checkbox" id="show_decimal_checkbox">
 	</div>
 	<div id="fraction_container"></div>
 
 </body>
 
 <script type="text/javascript">
-	document.getElementById("submit").addEventListener("click", get_input);
 	const fraction_width = 500;
 	const fraction_height = 25;
 
 	var fraction_ids = [];
+
+	document.getElementById("submit").addEventListener("click", get_input);
+	document.getElementById("show_decimal_checkbox").addEventListener("change", toggleDecimal);
 
 	function createFraction(numerator, denominator) {
 		var fraction_container = document.getElementById('fraction_container');
@@ -80,6 +89,7 @@
 		}
 
 		fraction_container.appendChild(fraction);
+		makeDecimal(fraction);
 		return fraction;
 	}
 
@@ -98,26 +108,44 @@
 		
 	}
 
-	function showDecimal(fraction){
+	function makeDecimal(fraction){
 		var decimal_div = document.createElement('div');
 			decimal_div.classList.add("decimal");
 
 		for (var i = 10; i > 0; i--) {
 			decimal_block = document.createElement('span');
 			decimal_block.style.width = (fraction_width / 10) +"px";
-			console.log("width ", decimal_block.style.width);
 			decimal_block.classList.add("decimal-block")
 			decimal_div.appendChild(decimal_block)
 		} 
 		fraction.appendChild(decimal_div);
+		decimal_div.fraction = fraction;
+		toggleDecimal();
 	}
 
 	function createButtons(fraction) {
-
+		
 	}
 
 	function removeFraction(fraction) {
 
+
+	}
+
+	function toggleDecimal() {
+		var decimals = document.getElementsByClassName("decimal");
+		var show_decimal_checkbox = document.getElementById("show_decimal_checkbox").checked;
+		
+		if (show_decimal_checkbox) {
+			for (var i = decimals.length - 1; i >= 0; i--) {
+				decimals[i].classList.remove("hide");
+			}
+		} else {
+			for (var i = decimals.length - 1; i >= 0; i--) {
+				decimals[i].classList.add("hide");
+			}
+		}
+		
 	}
 	
 </script>
