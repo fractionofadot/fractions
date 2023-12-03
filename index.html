@@ -9,6 +9,7 @@
 			outline: 1px solid black;
 			width: 500px;
 			height: 25px;
+			position: relative;
 		}
 		.fraction-block {
 			outline: 1px solid black;
@@ -23,20 +24,44 @@
 		.denominator {
 			background-color: indianred;
 		}
+
+		.decimal {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 500px;
+			height: 25px;
+		}
+
+		.decimal-block {
+			outline: 1px dashed pink;
+			display: inline-block;
+			height: 25px;
+		}
+
+		#inputs {
+			margin-bottom: 1em;
+		}
 	</style>
 </head>
 <body>
-	<div id="inputs"></div>
+	<div id="inputs">
+		<p>Type a fraction to add it to the list (example: 3/4)</p>
+		<input type="text" name="fraction" id="user_fraction">
+		<input type="submit" name="add" id="submit" value="add fraction to list">
+	</div>
 	<div id="fraction_container"></div>
 
 </body>
 
 <script type="text/javascript">
+	document.getElementById("submit").addEventListener("click", get_input);
+	const fraction_width = 500;
+	const fraction_height = 25;
+
+	var fraction_ids = [];
 
 	function createFraction(numerator, denominator) {
-		var fraction_width = 500;
-		var fraction_height = 25;
-		
 		var fraction_container = document.getElementById('fraction_container');
 		
 		var fraction = document.createElement('div');
@@ -51,16 +76,49 @@
 				denom.classList.add("denominator");
 			}
 			denom.style.width = (fraction_width / denominator) + "px";
-			fraction.appendChild(denom)
+			fraction.appendChild(denom);
 		}
 
 		fraction_container.appendChild(fraction);
+		return fraction;
 	}
 
-	createFraction(3,4);
-	createFraction(5,6);
-	createFraction(9,11);
-	createFraction(10,12);
+	function get_input(event) {
+		var fraction_input = document.getElementById("user_fraction").value;
+		// expecting int "/" int
+		var fraction_numbers = fraction_input.split("/");
+		var numerator = parseInt(fraction_numbers[0]);
+		var denominator = parseInt(fraction_numbers[1]);
+
+		if (numerator <= denominator) {
+			createFraction(numerator,denominator);
+		} else {
+			console.log("The numerator must be smaller than the denominator. We don't support improper fractions at this time.")
+		}
+		
+	}
+
+	function showDecimal(fraction){
+		var decimal_div = document.createElement('div');
+			decimal_div.classList.add("decimal");
+
+		for (var i = 10; i > 0; i--) {
+			decimal_block = document.createElement('span');
+			decimal_block.style.width = (fraction_width / 10) +"px";
+			console.log("width ", decimal_block.style.width);
+			decimal_block.classList.add("decimal-block")
+			decimal_div.appendChild(decimal_block)
+		} 
+		fraction.appendChild(decimal_div);
+	}
+
+	function createButtons(fraction) {
+
+	}
+
+	function removeFraction(fraction) {
+
+	}
 	
 </script>
 </html>
